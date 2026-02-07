@@ -4,14 +4,6 @@
   "installCommand": "pnpm install",
   "framework": "nextjs",
   "regions": ["gru1"],
-  "env": {
-    "DATABASE_URL": "@database_url",
-    "PLUGGY_CLIENT_ID": "@pluggy_client_id",
-    "PLUGGY_CLIENT_SECRET": "@pluggy_client_secret",
-    "UPSTASH_REDIS_REST_URL": "@upstash_redis_rest_url",
-    "UPSTASH_REDIS_REST_TOKEN": "@upstash_redis_rest_token",
-    "NODE_ENV": "production"
-  },
   "headers": [
     {
       "source": "/(.*)",

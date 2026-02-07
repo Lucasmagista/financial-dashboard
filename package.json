@@ -10,7 +10,9 @@
     "check": "node scripts/check-setup.js",
     "setup": "node scripts/check-setup.js && pnpm install",
     "format": "prettier --write .",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "check-deploy": "node scripts/check-vercel-deploy.js",
+    "predeploy": "pnpm check-deploy"
   },
   "dependencies": {
     "@hookform/resolvers": "^3.10.0",
