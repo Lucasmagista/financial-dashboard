@@ -73,7 +73,7 @@ export async function proxy(req: NextRequest) {
     [
       "default-src 'self'",
       "img-src 'self' https://logodownload.org https://upload.wikimedia.org https://cdn.segment.com data: blob:",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://connect.pluggy.ai https://cdn.pluggy.ai https://cdn.segment.com https://api.segment.io https://o484658.ingest.sentry.io",
+      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://connect.pluggy.ai https://cdn.pluggy.ai https://cdn.segment.com https://api.segment.io https://o484658.ingest.sentry.io https://va.vercel-scripts.com",
       "style-src 'self' 'unsafe-inline'",
       "connect-src 'self' https://connect.pluggy.ai https://api.segment.io https://cdn.segment.com https://o484658.ingest.sentry.io https:",
       "font-src 'self' data:",

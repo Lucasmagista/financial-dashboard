@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { usePathname, useRouter } from 'next/navigation';
 import { signOut } from 'next-auth/react';
 import { 
@@ -60,8 +61,17 @@ export function Navigation() {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-8">
-            <Link href="/" className="py-4 font-bold text-lg">
-              💰 FinanceDash
+            <Link href="/" className="py-4 flex items-center gap-2">
+              <Image 
+                src="/icon-png.png" 
+                alt="DinDin Logo" 
+                width={48} 
+                height={48}
+                className="rounded-lg"
+                priority
+                unoptimized
+              />
+              <span className="font-bold text-lg">DinDin</span>
             </Link>
             <div className="flex items-center gap-1">
               {navigation.map((item) => {

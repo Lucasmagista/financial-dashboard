@@ -10,25 +10,13 @@ const _geist = Geist({ subsets: ["latin"] });
 const _geistMono = Geist_Mono({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: 'FinanceDash - Dashboard Financeiro Pessoal',
+  title: 'DinDin - Dashboard Financeiro Pessoal',
   description: 'Gerencie suas finanças pessoais com inteligência. Conecte seus bancos via Open Finance, acompanhe transações, defina orçamentos e alcance suas metas financeiras.',
   generator: 'v0.app',
   icons: {
-    icon: [
-      {
-        url: '/icon-light-32x32.png',
-        media: '(prefers-color-scheme: light)',
-      },
-      {
-        url: '/icon-dark-32x32.png',
-        media: '(prefers-color-scheme: dark)',
-      },
-      {
-        url: '/icon.svg',
-        type: 'image/svg+xml',
-      },
-    ],
-    apple: '/apple-icon.png',
+    icon: '/icon-png.png',
+    shortcut: '/icon-png.png',
+    apple: '/icon-png.png',
   },
 }
 
