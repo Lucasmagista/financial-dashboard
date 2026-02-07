@@ -3,6 +3,8 @@ import { updateGoalProgress, sql } from '@/lib/db';
 import { getCurrentUser } from '@/lib/auth-simple';
 import { z } from 'zod';
 
+export const dynamic = 'force-dynamic';
+
 const ProgressSchema = z.object({
   currentAmount: z.number().min(0),
 });
