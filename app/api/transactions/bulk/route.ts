@@ -4,6 +4,8 @@ import { requireAuth } from '@/lib/auth-simple';
 import { logAudit } from '@/lib/audit-log';
 import { z } from 'zod';
 
+export const dynamic = 'force-dynamic';
+
 const BulkUpdateSchema = z.object({
   transactionIds: z.array(z.string()).min(1).max(100),
   updates: z.object({

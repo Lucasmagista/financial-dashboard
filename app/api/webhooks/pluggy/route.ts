@@ -7,6 +7,8 @@ import { sql } from '@/lib/db';
 import { logger } from '@/lib/logger';
 import { createHmac, timingSafeEqual } from 'crypto';
 
+export const dynamic = 'force-dynamic';
+
 const WEBHOOK_SECRET = process.env.PLUGGY_WEBHOOK_SECRET;
 
 export async function POST(request: NextRequest) {

@@ -4,6 +4,8 @@ import { sql } from '@/lib/db';
 import { z } from 'zod';
 import { logger } from '@/lib/logger';
 
+export const dynamic = 'force-dynamic';
+
 const DisconnectSchema = z.object({
   // Accept numeric id or item_id string from client
   connection_id: z.union([

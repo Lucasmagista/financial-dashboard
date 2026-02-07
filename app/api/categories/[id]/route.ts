@@ -3,6 +3,8 @@ import { updateCategory, deleteCategory, sql } from '@/lib/db';
 import { getCurrentUser } from '@/lib/auth-simple';
 import { z } from 'zod';
 
+export const dynamic = 'force-dynamic';
+
 const UpdateCategorySchema = z.object({
   name: z.string().optional(),
   type: z.enum(['income', 'expense']).optional(),

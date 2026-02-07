@@ -3,6 +3,8 @@ import { requireAuth } from '@/lib/auth-real';
 import { createConnectToken } from '@/lib/open-finance';
 import { logger } from '@/lib/logger';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   try {
     // Require authentication

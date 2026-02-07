@@ -3,6 +3,8 @@ import { updateBudget, deleteBudget, sql } from '@/lib/db';
 import { getCurrentUser } from '@/lib/auth-simple';
 import { z } from 'zod';
 
+export const dynamic = 'force-dynamic';
+
 const UpdateBudgetSchema = z.object({
   name: z.string().optional(),
   amount: z.number().positive().optional(),

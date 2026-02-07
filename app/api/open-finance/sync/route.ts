@@ -7,6 +7,8 @@ import { z } from 'zod';
 import { sanitizeDescription, sanitizeNotes, sanitizeTags } from '@/lib/sanitization';
 import { logAudit } from '@/lib/audit-log';
 
+export const dynamic = 'force-dynamic';
+
 const SyncSchema = z.object({
   connection_id: z.union([z.number(), z.string().uuid()]),
   force: z.boolean().optional().default(false),

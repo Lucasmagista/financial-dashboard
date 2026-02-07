@@ -3,6 +3,8 @@ import { getCurrentUser } from '@/lib/auth-simple';
 import { sql } from '@/lib/db';
 import { logger } from '@/lib/logger';
 
+export const dynamic = 'force-dynamic';
+
 // GET /api/user/stats - Get user statistics
 export async function GET() {
   try {

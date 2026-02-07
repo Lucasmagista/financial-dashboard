@@ -4,6 +4,8 @@ import { requireAuth } from '@/lib/auth-simple';
 import { getPaginationParams } from '@/lib/pagination';
 import { z } from 'zod';
 
+export const dynamic = 'force-dynamic';
+
 const FilterSchema = z.object({
   startDate: z.string().optional(),
   endDate: z.string().optional(),

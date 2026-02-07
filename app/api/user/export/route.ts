@@ -4,6 +4,8 @@ import { sql } from '@/lib/db';
 import jsPDF from 'jspdf';
 import autoTable from 'jspdf-autotable';
 
+export const dynamic = 'force-dynamic';
+
 // GET /api/user/export - Export all user data
 export async function GET(request: NextRequest) {
   try {

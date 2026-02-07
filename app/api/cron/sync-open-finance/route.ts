@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { sql } from '@/lib/db';
 import { syncConnectionInternal } from '@/app/api/open-finance/sync/route';
 
+export const dynamic = 'force-dynamic';
+
 // This endpoint should be called by a cron job (Vercel Cron or external)
 // Verify with CRON_SECRET environment variable
 export async function GET(request: NextRequest) {

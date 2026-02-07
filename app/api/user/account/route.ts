@@ -4,6 +4,8 @@ import { getCurrentUser } from '@/lib/auth-simple';
 import { z } from 'zod';
 import bcrypt from 'bcryptjs';
 
+export const dynamic = 'force-dynamic';
+
 const DeleteAccountSchema = z.object({
   password: z.string().min(1),
   confirmation: z.literal('DELETE'),

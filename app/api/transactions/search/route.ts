@@ -3,6 +3,8 @@ import { sql } from '@/lib/db';
 import { requireAuth } from '@/lib/auth-simple';
 import { getPaginationParams } from '@/lib/pagination';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   try {
     const user = await requireAuth();

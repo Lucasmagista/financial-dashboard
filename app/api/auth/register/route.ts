@@ -6,6 +6,8 @@ import { sql } from '@/lib/db';
 import { logger, logAuthEvent } from '@/lib/logger';
 import { sanitizeEmail, sanitizeHtml, sanitizeDescription } from '@/lib/sanitization';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: NextRequest) {
   const startTime = Date.now();
   const forwarded = request.headers.get('x-forwarded-for');

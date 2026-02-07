@@ -4,6 +4,8 @@ import { getCurrentUser } from '@/lib/auth-simple';
 import bcrypt from 'bcryptjs';
 import { z } from 'zod';
 
+export const dynamic = 'force-dynamic';
+
 const PasswordSchema = z.object({
   currentPassword: z.string().min(1),
   newPassword: z.string().min(6),

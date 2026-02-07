@@ -6,6 +6,8 @@ import { z } from 'zod';
 import { sanitizeAmount, sanitizeDescription, sanitizeDate } from '@/lib/sanitization';
 import { logger } from '@/lib/logger';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: NextRequest) {
   try {
     const user = await getCurrentUser();

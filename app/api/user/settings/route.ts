@@ -4,6 +4,8 @@ import { sql } from '@/lib/db';
 import { logger } from '@/lib/logger';
 import { z } from 'zod';
 
+export const dynamic = 'force-dynamic';
+
 const SettingsSchema = z.object({
   email_notifications: z.boolean().optional(),
   push_notifications: z.boolean().optional(),

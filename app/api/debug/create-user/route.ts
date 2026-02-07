@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { registerUser } from '@/lib/auth-simple';
 import { sql } from '@/lib/db';
 
+export const dynamic = 'force-dynamic';
+
 // This is a DEBUG endpoint - remove in production!
 export async function POST(request: NextRequest) {
   try {

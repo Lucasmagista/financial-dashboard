@@ -6,6 +6,8 @@ import { z } from 'zod';
 import { sanitizeDescription, sanitizeNotes, sanitizeTags } from '@/lib/sanitization';
 import { logger } from '@/lib/logger';
 
+export const dynamic = 'force-dynamic';
+
 const SaveConnectionSchema = z.object({
   itemId: z.string(),
   institutionId: z.string(),

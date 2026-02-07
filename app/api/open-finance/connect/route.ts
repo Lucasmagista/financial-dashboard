@@ -2,6 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getCurrentUser } from '@/lib/auth-simple';
 import { sql } from '@/lib/db';
 
+export const dynamic = 'force-dynamic';
+
 /**
  * API endpoint for connecting Open Finance accounts
  * 

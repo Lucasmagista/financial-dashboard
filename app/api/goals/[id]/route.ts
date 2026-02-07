@@ -3,6 +3,8 @@ import { updateGoal, deleteGoal, sql } from '@/lib/db';
 import { getCurrentUser } from '@/lib/auth-simple';
 import { z } from 'zod';
 
+export const dynamic = 'force-dynamic';
+
 const UpdateGoalSchema = z.object({
   name: z.string().optional(),
   targetAmount: z.number().positive().optional(),

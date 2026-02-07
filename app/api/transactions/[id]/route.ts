@@ -3,6 +3,8 @@ import { updateTransaction, sql } from '@/lib/db';
 import { getCurrentUser } from '@/lib/auth-simple';
 import { z } from 'zod';
 
+export const dynamic = 'force-dynamic';
+
 const UpdateTransactionSchema = z.object({
   accountId: z.string().uuid().optional(),
   categoryId: z.string().uuid().optional().nullable(),

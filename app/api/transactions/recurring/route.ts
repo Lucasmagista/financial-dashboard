@@ -3,6 +3,8 @@ import { sql } from '@/lib/db';
 import { requireAuth } from '@/lib/auth-simple';
 import { z } from 'zod';
 
+export const dynamic = 'force-dynamic';
+
 const RecurringTemplateSchema = z.object({
   accountId: z.string().uuid(),
   categoryId: z.string().uuid().optional(),

@@ -4,6 +4,8 @@ import { paginate } from '@/lib/pagination';
 import { getCachedTransactions, invalidateTransactionsCache } from '@/lib/db-cached';
 import { z } from 'zod';
 
+export const dynamic = 'force-dynamic';
+
 const QuerySchema = z.object({
   page: z.coerce.number().min(1).default(1),
   limit: z.coerce.number().min(1).max(100).default(50),

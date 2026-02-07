@@ -3,6 +3,8 @@ import { requireAuth } from '@/lib/auth-real';
 import { uploadReceipt, deleteReceipt, listReceiptsForTransaction } from '@/lib/blob-storage';
 import { sql } from '@/lib/db';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ id: string }> }

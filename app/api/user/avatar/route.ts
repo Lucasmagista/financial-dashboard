@@ -3,6 +3,8 @@ import { sql } from '@/lib/db';
 import { getCurrentUser } from '@/lib/auth-simple';
 import { put } from '@vercel/blob';
 
+export const dynamic = 'force-dynamic';
+
 export async function POST(request: NextRequest) {
   try {
     const user = await getCurrentUser();

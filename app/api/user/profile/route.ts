@@ -5,6 +5,8 @@ import { z } from 'zod';
 import { logger } from '@/lib/logger';
 import { sanitizeDescription, sanitizeEmail, sanitizePhone } from '@/lib/sanitization';
 
+export const dynamic = 'force-dynamic';
+
 const UpdateProfileSchema = z.object({
   name: z.string().min(1).max(255).transform(sanitizeDescription).optional(),
   phone: z.string().nullable().optional().transform((val) => val ? sanitizePhone(val) : null),
