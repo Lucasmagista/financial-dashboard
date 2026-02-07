@@ -3,6 +3,8 @@ import { updateAccount, deleteAccount, sql } from '@/lib/db';
 import { getCurrentUser } from '@/lib/auth-simple';
 import { z } from 'zod';
 
+export const dynamic = 'force-dynamic';
+
 const UpdateAccountSchema = z.object({
   name: z.string().optional(),
   accountType: z.enum(['checking', 'savings', 'investment', 'credit_card', 'other']).optional(),
