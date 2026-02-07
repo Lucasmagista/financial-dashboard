@@ -155,7 +155,7 @@ export async function DELETE(request: NextRequest) {
       return NextResponse.json({ error: 'Transaction ID required' }, { status: 400 });
     }
 
-    await deleteTransaction(parseInt(id));
+    await deleteTransaction(id);
 
     return NextResponse.json({ success: true });
   } catch (error) {

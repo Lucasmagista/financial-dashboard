@@ -58,16 +58,30 @@ export default async function DashboardPage() {
   ]).then(results => results.map(r => r.status === 'fulfilled' ? r.value : []));
 
   // Calculate stats
-  const totalAssets = Number(totalBalance?.total_assets) || 0;
-  const totalLiabilities = Number(totalBalance?.total_liabilities) || 0;
+  const balanceData = totalBalance as { total_assets: number; total_liabilities: number } | any[];
+  const totalAssets = typeof balanceData === 'object' && 'total_assets' in balanceData 
+    ? Number(balanceData.total_assets) 
+    : 0;
+  const totalLiabilities = typeof balanceData === 'object' && 'total_liabilities' in balanceData 
+    ? Number(balanceData.total_liabilities) 
+    : 0;
   const netWorth = totalAssets - totalLiabilities;
 
   // Calculate this month's income and expenses
   const currentMonth = new Date().toISOString().slice(0, 7);
-  const thisMonthData = incomeExpenses?.find?.(item => item.month === currentMonth);
+  const incomeExpensesData = Array.isArray(incomeExpenses) ? incomeExpenses as any[] : [];
+  const thisMonthData = incomeExpensesData.find((item: any) => item.month === currentMonth) as any;
   const thisMonthIncome = Number(thisMonthData?.income) || 0;
   const thisMonthExpenses = Number(thisMonthData?.expenses) || 0;
   const monthBalance = thisMonthIncome - thisMonthExpenses;
+  
+  // Ensure proper types for rendering
+  const accountsData = Array.isArray(accounts) ? accounts as any[] : [];
+  const transactionsData = Array.isArray(transactions) ? transactions as any[] : [];
+  const categoryDataArray = Array.isArray(categoryData) ? categoryData as any[] : [];
+  const budgetsData = Array.isArray(budgets) ? budgets as any[] : [];
+  const goalsData = Array.isArray(goals) ? goals as any[] : [];
+  const alertsData = Array.isArray(alerts) ? alerts as any[] : [];
   
   console.log('[v0] Dashboard stats:', {
     totalAssets,
@@ -77,7 +91,7 @@ export default async function DashboardPage() {
     thisMonthIncome,
     thisMonthExpenses,
     monthBalance,
-    activeAccounts: accounts.filter(a => a.is_active).length
+    activeAccounts: accountsData.filter((a: any) => a.is_active).length
   });
 
   return (
@@ -105,7 +119,7 @@ export default async function DashboardPage() {
             title="Total em Contas"
             value={formatCurrency(totalAssets)}
             icon={Wallet}
-            description={`${accounts.filter(a => a.is_active).length} conta(s) ativa(s)`}
+            description={`${accountsData.filter((a: any) => a.is_active).length} conta(s) ativa(s)`}
           />
           <StatCard
             title="Receitas (Mês)"
@@ -132,26 +146,26 @@ export default async function DashboardPage() {
 
         {/* Alerts and Predictions */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <AlertsPanel alerts={alerts} />
-          <PredictionsCard prediction={prediction} />
+          <AlertsPanel alerts={alertsData} />
+          <PredictionsCard prediction={prediction as any} />
         </div>
 
         {/* Charts Row */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <IncomeExpenseChart data={incomeExpenses} />
-          <CategoryBreakdown data={categoryData} />
+          <IncomeExpenseChart data={incomeExpensesData} />
+          <CategoryBreakdown data={categoryDataArray} />
         </div>
 
         {/* Accounts and Transactions */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-8">
-          <AccountsOverview accounts={accounts} />
-          <RecentTransactions transactions={transactions} />
+          <AccountsOverview accounts={accountsData} />
+          <RecentTransactions transactions={transactionsData} />
         </div>
 
         {/* Budgets and Goals */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          <BudgetsOverview budgets={budgets} />
-          <GoalsOverview goals={goals} />
+          <BudgetsOverview budgets={budgetsData} />
+          <GoalsOverview goals={goalsData} />
         </div>
       </main>
     </div>

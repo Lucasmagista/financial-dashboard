@@ -1,4 +1,8 @@
-export { getCurrentUser, requireAuth, getUserId, registerUser, loginUser, logout, AuthUser } from './auth-simple';
+export { getCurrentUser, requireAuth, getUserId, registerUser, loginUser, logout } from './auth-simple';
+export type { AuthUser } from './auth-simple';
+import { sql } from './db';
+import bcrypt from 'bcryptjs';
+import { cookies } from 'next/headers';
 
 // Change password
 export async function changePassword(
@@ -16,14 +20,14 @@ export async function changePassword(
   }
 
   // Verify old password
-  const isValid = await verifyPassword(oldPassword, result[0].password_hash);
+  const isValid = await bcrypt.compare(oldPassword, result[0].password_hash);
 
   if (!isValid) {
     throw new Error('Invalid current password');
   }
 
   // Hash new password
-  const newPasswordHash = await hashPassword(newPassword);
+  const newPasswordHash = await bcrypt.hash(newPassword, 10);
 
   // Update password
   await sql`

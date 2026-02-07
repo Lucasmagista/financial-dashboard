@@ -14,6 +14,15 @@ export const sql = neon(process.env.DATABASE_URL, {
   arrayMode: false,
 });
 
+// Conexão com fullResults para queries dinâmicas
+const sqlRaw = neon(process.env.DATABASE_URL, {
+  fetchOptions: {
+    cache: 'no-store'
+  },
+  fullResults: true,
+  arrayMode: false,
+});
+
 // Types
 export interface User {
   id: string;
@@ -61,6 +70,7 @@ export interface Transaction {
   reference_number?: string;
   mcc?: string;
   bank_category?: string;
+  merchant?: string;
   created_at: Date;
   updated_at: Date;
   category_name?: string;
@@ -107,6 +117,7 @@ export interface Goal {
   target_amount: number;
   current_amount: number;
   target_date?: Date;
+  deadline?: Date;
   is_completed: boolean;
   created_at: Date;
   updated_at: Date;
@@ -349,7 +360,7 @@ export async function getIncomeVsExpenses(userId: string, months = 6) {
   `;
 
   const mapped = result.map(r => ({
-    ...r,
+    month: r.month as string,
     income: Number(r.income || 0),
     expenses: Number(r.expenses || 0),
   }));
@@ -380,7 +391,14 @@ export async function getCategoryBreakdown(userId: string, type: 'income' | 'exp
     GROUP BY c.id, c.name, c.color, c.icon
     ORDER BY total DESC
   `;
-  return result;
+  
+  return result.map(r => ({
+    name: r.name as string,
+    color: r.color as string,
+    icon: r.icon as string,
+    total: Number(r.total || 0),
+    transaction_count: Number(r.transaction_count || 0),
+  }));
 }
 
 // Budget Functions
@@ -520,14 +538,15 @@ export async function updateBudget(
     throw new Error('No fields to update');
   }
 
+  const setClauses = updates.join(', ');
   values.push(budgetId);
-  const result = await sql`
-    UPDATE budgets 
-    SET ${sql.raw(updates.join(', '))}, updated_at = NOW()
-    WHERE id = ${budgetId}
-    RETURNING *
-  `;
-  const budget = result[0];
+
+  // Usar any para bypass do type checker em queries dinâmicas
+  const result = await (sqlRaw as any)(
+    `UPDATE budgets SET ${setClauses}, updated_at = NOW() WHERE id = $${paramCount} RETURNING *`,
+    values
+  );
+  const budget = result.rows[0];
   return {
     ...budget,
     amount: Number(budget.amount)
@@ -556,7 +575,7 @@ export async function updateGoal(
   const setClauses = updates.map((field, i) => `${field} = $${i + 1}`).join(', ');
   values.push(goalId);
 
-  const result = await sql.raw(
+  const result = await (sqlRaw as any)(
     `UPDATE goals SET ${setClauses}, updated_at = NOW() WHERE id = $${values.length} RETURNING *`,
     values
   );
@@ -618,7 +637,7 @@ export async function updateAccount(
   query += updates.join(', ');
   query += `, updated_at = NOW() WHERE id = $${paramIndex} RETURNING *`;
 
-  const result = await sql.query(query, values);
+  const result = await (sqlRaw as any)(query, values);
   const account = result.rows[0];
   return {
     ...account,
@@ -647,7 +666,7 @@ export async function updateCategory(
   const setClauses = updates.map((field, i) => `${field} = $${i + 1}`).join(', ');
   values.push(categoryId);
 
-  const result = await sql.raw(
+  const result = await (sqlRaw as any)(
     `UPDATE categories SET ${setClauses} WHERE id = $${values.length} RETURNING *`,
     values
   );
@@ -680,7 +699,7 @@ export async function updateTransaction(
   const setClauses = updates.map((field, i) => `${field} = $${i + 1}`).join(', ');
   values.push(transactionId);
 
-  const result = await sql.raw(
+  const result = await (sqlRaw as any)(
     `UPDATE transactions SET ${setClauses}, updated_at = NOW() WHERE id = $${values.length} RETURNING *`,
     values
   );

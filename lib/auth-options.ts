@@ -1,4 +1,4 @@
-import NextAuth, { type NextAuthOptions } from 'next-auth';
+import NextAuth from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import bcrypt from 'bcryptjs';
 import { sql } from '@/lib/db';
@@ -22,7 +22,7 @@ type AppUser = {
 // Precomputed bcrypt hash for the string "password" to normalize timing
 const DUMMY_HASH = '$2b$10$CwTycUXWue0Thq9StjUM0uJ8iJEOIBxPL5BwKs6NUVZhX/9lV7q';
 
-export const authOptions: NextAuthOptions = {
+export const authOptions: any = {
   session: {
     strategy: 'jwt',
     maxAge: 60 * 60 * 24 * 30, // 30 days
@@ -43,16 +43,11 @@ export const authOptions: NextAuthOptions = {
         if (!parsed.success) return null;
         const { email, password } = parsed.data;
 
-        const forwardedFor = req?.headers?.['x-forwarded-for'];
-        const ipHeader = Array.isArray(forwardedFor)
-          ? forwardedFor[0]
-          : forwardedFor;
+        const forwardedFor = req?.headers?.get('x-forwarded-for');
+        const ipHeader = forwardedFor;
         const ip = ipHeader?.split(',')[0]?.trim();
 
-        const requestIdHeader = req?.headers?.['x-request-id'];
-        const requestId = Array.isArray(requestIdHeader)
-          ? requestIdHeader[0]
-          : requestIdHeader;
+        const requestId = req?.headers?.get('x-request-id');
 
         try {
           // Older databases may not have is_active/is_email_verified; fetch only guaranteed columns.
@@ -142,7 +137,7 @@ export const authOptions: NextAuthOptions = {
           logger.error('Credentials authorize failed', error, {
             email,
             ip,
-            requestId,
+            requestId: requestId || undefined,
           });
           return null;
         }
@@ -150,7 +145,7 @@ export const authOptions: NextAuthOptions = {
     }),
   ],
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user }: any) {
       if (user && typeof user === 'object' && 'id' in user) {
         const authUser = user as AppUser;
         token.id = authUser.id;
@@ -159,7 +154,7 @@ export const authOptions: NextAuthOptions = {
       }
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token }: any) {
       if (session.user) {
         session.user.id = token.id as string;
         session.user.email = token.email as string;

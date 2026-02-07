@@ -64,7 +64,7 @@ export default function BudgetsPage() {
         description: 'Orçamento excluído com sucesso.',
       });
 
-      setSelectedBudget(null); // Fecha o diálogo
+      setSelectedBudget(undefined); // Fecha o diálogo
       loadData();
     } catch (error) {
       toast({

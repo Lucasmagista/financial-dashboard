@@ -70,10 +70,11 @@ export async function POST(
     // Log audit
     await logAudit({
       userId: user.id,
-      action: 'DUPLICATE_TRANSACTION',
-      resourceType: 'transaction',
-      resourceId: transactionId,
-      details: { count, newDate: date },
+      action: 'transaction.create',
+      entityType: 'transaction',
+      entityId: transactionId,
+      details: { count, newDate: date, duplicated: true },
+      success: true,
     });
 
     return NextResponse.json({

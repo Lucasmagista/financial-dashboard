@@ -317,6 +317,7 @@ export default function AccountsPage() {
                           {bank.bankCode ? (
                             <BankLogo 
                               bankCode={bank.bankCode}
+                              bankName={bank.bankName}
                               size={48}
                               className="rounded-xl"
                             />

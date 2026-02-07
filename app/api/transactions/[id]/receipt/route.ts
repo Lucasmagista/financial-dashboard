@@ -72,10 +72,11 @@ export async function POST(
     // Log audit
     await logAudit({
       userId: user.id,
-      action: 'UPLOAD_RECEIPT',
-      resourceType: 'transaction',
-      resourceId: transactionId,
-      details: { fileName: file.name, fileSize: file.size, url: blob.url },
+      action: 'transaction.update',
+      entityType: 'transaction',
+      entityId: transactionId,
+      details: { fileName: file.name, fileSize: file.size, url: blob.url, receiptUploaded: true },
+      success: true,
     });
 
     return NextResponse.json({ url: blob.url });
@@ -123,9 +124,11 @@ export async function DELETE(
     // Log audit
     await logAudit({
       userId: user.id,
-      action: 'DELETE_RECEIPT',
-      resourceType: 'transaction',
-      resourceId: transactionId,
+      action: 'transaction.update',
+      entityType: 'transaction',
+      entityId: transactionId,
+      details: { receiptDeleted: true },
+      success: true,
     });
 
     return NextResponse.json({ success: true });

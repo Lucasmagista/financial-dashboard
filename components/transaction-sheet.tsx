@@ -37,29 +37,14 @@ import { formatCurrency } from '@/lib/utils-finance';
 import { EditTransactionDialog } from '@/components/edit-transaction-dialog';
 import { DeleteConfirmDialog } from '@/components/delete-confirm-dialog';
 import { useToast } from '@/hooks/use-toast';
-import type { Account, Category } from '@/lib/db';
+import type { Account, Category, Transaction as BaseTransaction } from '@/lib/db';
 
-interface Transaction {
-  id: string;
-  description: string;
-  amount: number;
-  type: 'income' | 'expense';
-  category_id: string;
+interface Transaction extends Omit<BaseTransaction, 'transaction_date' | 'user_id'> {
+  transaction_date: string;
   category_name?: string;
-  account_id: string;
   account_name?: string;
   bank_name?: string;
-  date: string;
-  transaction_date: string;
-  is_recurring?: boolean;
-  merchant?: string;
-  notes?: string;
-  tags?: string[];
-  status?: string | null;
-  payment_method?: string | null;
-  reference_number?: string | null;
-  mcc?: string | null;
-  provider_code?: string | null;
+  date?: string;
 }
 
 interface TransactionSheetProps {
@@ -334,7 +319,7 @@ export function TransactionSheet({
       <EditTransactionDialog
         open={editDialogOpen}
         onOpenChange={setEditDialogOpen}
-        transaction={transaction}
+        transaction={transaction as any}
         accounts={accounts}
         categories={categories}
         onSuccess={() => {

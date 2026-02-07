@@ -63,9 +63,10 @@ export async function PATCH(request: NextRequest) {
     // Log audit
     await logAudit({
       userId: user.id,
-      action: 'BULK_UPDATE_TRANSACTIONS',
-      resourceType: 'transaction',
-      details: { count: transactionIds.length, updates },
+      action: 'transaction.update',
+      entityType: 'transaction',
+      details: { count: transactionIds.length, updates, bulk: true },
+      success: true,
     });
 
     return NextResponse.json({
@@ -128,9 +129,10 @@ export async function DELETE(request: NextRequest) {
     // Log audit
     await logAudit({
       userId: user.id,
-      action: 'BULK_DELETE_TRANSACTIONS',
-      resourceType: 'transaction',
-      details: { count: transactionIds.length },
+      action: 'transaction.delete',
+      entityType: 'transaction',
+      details: { count: transactionIds.length, bulk: true },
+      success: true,
     });
 
     return NextResponse.json({

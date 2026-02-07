@@ -38,27 +38,14 @@ import {
 import { formatCurrency } from '@/lib/utils-finance';
 import { BankLogo } from '@/components/bank-logo';
 import { TransactionSheet } from '@/components/transaction-sheet';
+import type { Transaction as BaseTransaction } from '@/lib/db';
 
 
-interface Transaction {
-  id: string;
-  description: string;
-  amount: number;
-  type: 'income' | 'expense';
-  category_id: string;
-  category_name?: string;
-  account_id: string;
-  account_name?: string;
+interface Transaction extends Omit<BaseTransaction, 'transaction_date' | 'user_id'> {
   transaction_date: string;
   date: string;
-  is_recurring?: boolean;
-  merchant?: string;
-  notes?: string | null;
-  tags?: string[] | null;
-  status?: string | null;
-  payment_method?: string | null;
-  reference_number?: string | null;
-  mcc?: string | null;
+  category_name?: string;
+  account_name?: string;
 }
 
 interface Account {

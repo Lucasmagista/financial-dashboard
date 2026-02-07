@@ -8,18 +8,10 @@ import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/hooks/use-toast';
-import { Account, Category } from '@/lib/db';
+import { Account, Category, Transaction as BaseTransaction } from '@/lib/db';
 
-interface Transaction {
-  id: string;
-  description: string;
-  amount: number;
-  type: 'income' | 'expense';
-  category_id: string;
-  account_id: string;
+interface Transaction extends Omit<BaseTransaction, 'transaction_date' | 'user_id'> {
   date: string;
-  notes?: string;
-  tags?: string[];
 }
 
 interface EditTransactionDialogProps {

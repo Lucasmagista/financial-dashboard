@@ -56,7 +56,7 @@ export default function CategoriesPage() {
         description: 'Categoria excluída com sucesso.',
       });
 
-      setSelectedCategory(null); // Fecha o diálogo
+      setSelectedCategory(undefined); // Fecha o diálogo
       loadData();
     } catch (error) {
       toast({

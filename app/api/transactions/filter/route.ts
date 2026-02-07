@@ -22,7 +22,11 @@ export async function POST(request: NextRequest) {
     const user = await requireAuth();
     const body = await request.json();
     const filters = FilterSchema.parse(body);
-    const { offset, limit } = getPaginationParams(request);
+    
+    const { searchParams } = new URL(request.url);
+    const page = searchParams.get('page');
+    const limitParam = searchParams.get('limit');
+    const { offset, limit } = getPaginationParams(page || undefined, limitParam || undefined);
 
     // Build dynamic query
     let conditions = [`t.user_id = '${user.id}'`];
@@ -87,11 +91,11 @@ export async function POST(request: NextRequest) {
       SELECT COUNT(*) as total
       FROM transactions t
       WHERE ${whereClause}
-    `);
+    `) as unknown as any[];
 
     return NextResponse.json({
       transactions: results,
-      total: parseInt(countResult[0].total),
+      total: parseInt(countResult[0]?.total || '0'),
       page: Math.floor(offset / limit) + 1,
       pageSize: limit,
       filters,

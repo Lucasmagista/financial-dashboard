@@ -9,7 +9,9 @@ export async function GET(request: NextRequest) {
     const { searchParams } = new URL(request.url);
     
     const query = searchParams.get('q');
-    const { offset, limit } = getPaginationParams(request);
+    const page = searchParams.get('page');
+    const limitParam = searchParams.get('limit');
+    const { offset, limit } = getPaginationParams(page || undefined, limitParam || undefined);
 
     if (!query || query.trim().length < 2) {
       return NextResponse.json(

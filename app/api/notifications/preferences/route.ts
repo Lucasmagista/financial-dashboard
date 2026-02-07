@@ -204,7 +204,8 @@ export async function PATCH(request: NextRequest) {
     const prefs: NotificationPreferences = prefsResult[0]?.preferences || defaultPreferences;
 
     // Check if channel is enabled
-    if (!prefs[channel as keyof NotificationPreferences].enabled) {
+    const channelPrefs = prefs[channel as keyof NotificationPreferences];
+    if (typeof channelPrefs === 'object' && 'enabled' in channelPrefs && !channelPrefs.enabled) {
       return NextResponse.json(
         { error: `${channel} notifications are disabled` },
         { status: 400 }
@@ -219,7 +220,7 @@ export async function PATCH(request: NextRequest) {
       const userResult = await sql`SELECT email, name FROM users WHERE id = ${userId}`;
       const user = userResult[0];
       
-      const template = EmailTemplates.goalAchieved(user.name, 'Meta de Teste');
+      const template = EmailTemplates.goalAchieved(user.name, 'Meta de Teste', 1000);
       await sendEmail({
         to: user.email,
         ...template,

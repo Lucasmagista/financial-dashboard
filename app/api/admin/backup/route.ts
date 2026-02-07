@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { requireAuth } from '@/lib/auth-simple';
-import { backupDatabase } from '@/scripts/backup-database';
+import { backupDatabase } from '@/lib/backup';
 
 export async function POST(request: NextRequest) {
   try {
@@ -15,7 +15,6 @@ export async function POST(request: NextRequest) {
     const result = await backupDatabase();
     
     return NextResponse.json({
-      success: true,
       message: 'Backup completed successfully',
       ...result
     });

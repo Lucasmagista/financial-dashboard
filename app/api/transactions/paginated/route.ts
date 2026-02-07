@@ -36,8 +36,7 @@ export async function GET(request: NextRequest) {
     const result = await getCachedTransactions(
       user.id,
       query.page,
-      query.limit,
-      query
+      query.limit
     );
 
     return NextResponse.json(result);

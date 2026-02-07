@@ -30,27 +30,12 @@ import { BankLogo } from '@/components/bank-logo';
 import { AddTransactionDialogV2 } from '@/components/add-transaction-dialog-v2';
 import { AccountTransactionsSheet } from '@/components/account-transactions-sheet';
 import { useToast } from '@/hooks/use-toast';
+import type { Transaction as BaseTransaction } from '@/lib/db';
 
-interface Transaction {
-  id: string;
-  description: string;
-  amount: number;
-  type: 'income' | 'expense';
-  category_id: string;
-  category_name?: string;
-  account_id: string;
-  account_name?: string;
+interface Transaction extends Omit<BaseTransaction, 'transaction_date' | 'user_id' | 'bank_category'> {
   transaction_date: string;
-  is_recurring?: boolean;
-  merchant?: string;
-  notes?: string | null;
-  tags?: string[] | null;
-  status?: string | null;
-  provider_code?: string | null;
-  open_finance_id?: string | null;
-  payment_method?: string | null;
-  reference_number?: string | null;
-  mcc?: string | null;
+  category_name?: string;
+  account_name?: string;
   bank_category?: string | null;
 }
 
@@ -702,7 +687,7 @@ export default function TransactionsPage() {
       <AccountTransactionsSheet
         open={sheetOpen}
         onOpenChange={setSheetOpen}
-        accountGroup={selectedAccountGroup}
+        accountGroup={selectedAccountGroup as any}
         onUpdate={handleUpdate}
       />
     </div>

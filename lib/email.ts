@@ -17,7 +17,7 @@ function getTransporter() {
       },
     };
 
-    transporter = nodemailer.createTransporter(config);
+    transporter = nodemailer.createTransport(config);
   }
 
   return transporter;

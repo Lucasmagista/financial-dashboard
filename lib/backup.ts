@@ -1,9 +1,12 @@
 import { neon } from '@neondatabase/serverless';
 
 const sql = neon(process.env.DATABASE_URL!);
-const sqlRaw = neon(process.env.DATABASE_URL!, { fullResults: true });
 
-async function backupDatabase() {
+/**
+ * Create a backup of the database
+ * In production, this should save to S3/Blob storage
+ */
+export async function backupDatabase() {
   console.log('[Backup] Starting database backup...');
   
   const timestamp = new Date().toISOString().replace(/[:.]/g, '-');
@@ -23,12 +26,12 @@ async function backupDatabase() {
       'audit_logs'
     ];
     
-    const backupData: Record<string, any[]> = {};
+    const backupData: Record<string, unknown[]> = {};
     
     for (const table of tables) {
       console.log(`[Backup] Exporting ${table}...`);
-      const data = await (sqlRaw as any)(`SELECT * FROM ${table}`, []);
-      backupData[table] = data.rows || data;
+      const data = await sql.unsafe(`SELECT * FROM ${table}`);
+      backupData[table] = Array.isArray(data) ? data : [data];
     }
     
     // In production, save to S3/Blob storage
@@ -38,21 +41,15 @@ async function backupDatabase() {
     console.log(`[Backup] Tables backed up: ${tables.length}`);
     console.log(`[Backup] Total records: ${Object.values(backupData).reduce((acc, data) => acc + data.length, 0)}`);
     
-    return { success: true, backupName, timestamp };
+    return { 
+      success: true, 
+      backupName, 
+      timestamp,
+      tablesCount: tables.length,
+      totalRecords: Object.values(backupData).reduce((acc, data) => acc + data.length, 0)
+    };
   } catch (error) {
     console.error('[Backup] Backup failed:', error);
     throw error;
   }
 }
-
-// Run if called directly
-if (require.main === module) {
-  backupDatabase()
-    .then(() => process.exit(0))
-    .catch((error) => {
-      console.error(error);
-      process.exit(1);
-    });
-}
-
-export { backupDatabase };
